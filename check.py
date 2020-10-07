@@ -9,6 +9,7 @@ range_num参数：
 c = check.check(10)#新生成的运算式运算数在1——10之间
 c.check(expression_obj)
 
+main.py文件调用check（）方法之后，调用exp_output（）方法即可获得所有不同的式子（列表形式）
 '''
 class check:
     def __init__(self,range_num):
@@ -20,13 +21,6 @@ class check:
 __check私有方法：
 功能：
 用来进行运算式查重.每传入一个运算式，都会将其记录到字典中，并依据该字典来进行查重。
-
-***
-测试样例：
-exp为：‘1+2’与‘1-1+3’测试成功
-exp为：”1+2“与‘2+1’测试成功
-***
-
 
 传入参数：
 expression:传入的要进行查重的运算表达式（字符串对象）,注意，传入的运算式中运算数不能够以“假分数”的形式传入
@@ -84,3 +78,14 @@ expression:传入的要进行查重的运算表达式（字符串对象）,注�
             exp = ''.join(ls)
             self.check(exp)
 
+    '''
+    exp_output方法：
+    这个方法用来输出所有的在字典中的式子。
+    返回值是一个列表，其中包含了所有的不重复的式子。
+    '''
+    def exp_output(self):
+        exp_list = []
+        for v in self.dic.values():
+            for exp in v:
+                exp_list.append(exp)
+        return exp_list
