@@ -35,17 +35,23 @@ expression:传入的要进行查重的运算表达式（字符串对象）,注�
                     op_list1 = re.findall(r'[\D]', exp) # 找到运算式中的运算符
                     op_list2 = re.findall(r'[\D]', expression)
                     # 运算符顺序相同、运算式前两位运算结果相同，因此两运算式是相同的（对于三目运算而言）。运算式相同，于是对传入的运算式进行修改
-                    if (op_list2 == op_list1) and (eval(exp[:3]) == eval(expression[:3])):
+                    if (op_list2 == op_list1) and (eval(exp[:3]) == eval(expression[:3])) :
                         self.__correct(expression)
                         return 0
+                    if result<0:
+                        self.__positive_num(expression)
+                        return 0
 
-                    else:
-                        continue
+                    #else:
+                        #continue
                 self.dic[result].append(expression)
                 return 1
 
 
         except:  # 在字典中找不到相同的键，将该运算式加入到该字典当中。
+            if result<0:
+                self.__positive_num(expression)
+                return 0
             self.dic[result] = []
             self.dic[result].append(expression)
             return 1
@@ -89,3 +95,12 @@ expression:传入的要进行查重的运算表达式（字符串对象）,注�
             for exp in v:
                 exp_list.append(exp)
         return exp_list
+
+    '''
+这个私有方法用来生成只含正数的运算式（仅有正数做运算的话，把减号改成加号就好了嘛23333）
+    '''
+    def __positive_num(self,exp):
+        mode = '-'
+        exp = re.sub(mode,'+',exp)
+        self.check(exp)
+
