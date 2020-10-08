@@ -53,7 +53,7 @@ def get_answer(question):
     int_t = int(t)
     los_t = t- int_t
     if (int_t != 0 and los_t != 0):
-        fi_t = str(int_t) + "'" + str(los_t)
+        fi_t = str(str(int_t) + "'" + str(los_t))
     else:
         fi_t = str(t)
     return fi_t
@@ -104,7 +104,8 @@ def check_answer(e_fliepath,a_filepath):
     result = [] #存储式子的列表
     result1=[] #存"="后的结果
     result2=[] # 正确答案列表
-    correct = wrong =[] #存储正确和错误的下标
+    correct =[] 
+    wrong = []#存储正确和错误的下标
     fd = open(e_fliepath, "r" )  
     fk = open(a_filepath, "r" )  
 
@@ -124,22 +125,29 @@ def check_answer(e_fliepath,a_filepath):
 #比较   "="后的结果   与   正确答案   是否一样
     llen = len(result2)
     for i in range(llen):
-        if result1[i] == result2[i]:
+        if result1[i]==result2[i]:
             correct.append(i+1)
         else:
             wrong.append(i+1)
+        
+        
+        
     print(correct)
     print(wrong)
 
 # 结果写入Grade.txt文件
     f = open('Grade.txt', 'w')
-    f.write("correct:")
+    t = str(len(correct))
+    f.write("correct:" + t + '(')
+
     for line in correct:
         f.write(str(line) + ' ')
-    f.write('\n')
-    f.write("wrong:")
+    f.write(')\n')
+    r = str(len(wrong))
+    f.write("wrong:"+ r +'(')
     for line in wrong:
         f.write(str(line) + ' ')
+    f.write(')\n')
     f.close()
 
 
