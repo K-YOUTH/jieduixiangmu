@@ -49,7 +49,7 @@ def get_answer(question):
     t = eval(question)   #eval函数获取表达式的值
     t = Fraction('{}'.format(t)).limit_denominator()  #小数转换为真分数
     
-    #转化真分数：如67/8写为8'3/8
+    #转化真分数：如67/8写为8'3/8,先将真分数转为整数int_t,原数t减去整数int_t得到差los_t，最后int_t 、"'"符号、los_t组成结果
     int_t = int(t)
     los_t = t- int_t
     if (int_t != 0 and los_t != 0):
@@ -78,16 +78,17 @@ def opt():
 
 #问题写入Exercises.txt，答案写入Answers.txt
 def to_file(need=10, erange=10):
-    question_list = list()
-    answer_list = list()
-    c=check.check(10)
+    question_list = list()#问题列表
+    answer_list = list()#答案列表
+    c=check.check(10)#check函数检查是否合法
     for i in range(need):
         question0 = create_expression(erange=erange)
         c.check(question0)
-    question_list = c.exp_output()    
-    for q in question_list:
+    question_list = c.exp_output()    #合法的式子存于exp_output()，赋值给问题列表question_list
+    for q in question_list:             #for循环利用get_answer(question)函数获取答案并加进答案列表answer_list
         answer = str(get_answer(q))
         answer_list.append(answer)
+    #往练习题文件里写入式子，往答案文件写入答案
     f = open('Exercises.txt', 'w')
     k = open('Answers.txt', 'w')
     for line in question_list:
@@ -98,14 +99,17 @@ def to_file(need=10, erange=10):
         k.write(line+'\n')
     k.close()
 
-
-# e_fliepath：传入exercises.txt   a_filepath：传入answers.txt
+'''
+check_answer():对比exercises.txt里面的答案和answers.txt是否正确；
+correct[]、wrong[]分别存储正确和错误的下标
+参数：e_fliepath：传入exercises.txt   a_filepath：传入answers.txt
+'''
 def check_answer(e_fliepath,a_filepath):
     result = [] #存储式子的列表
     result1=[] #存"="后的结果
     result2=[] # 正确答案列表
-    correct =[] 
-    wrong = []#存储正确和错误的下标
+    correct =[] #存储正确的下标
+    wrong = []#存储错误的下标
     fd = open(e_fliepath, "r" )  
     fk = open(a_filepath, "r" )  
 
