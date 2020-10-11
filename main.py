@@ -3,6 +3,8 @@ import random
 import check
 from fractions import Fraction
 import time
+import sys
+import os
 
 ''''
 print 语句是为测试用，已注释掉
@@ -70,25 +72,6 @@ def get_answer(question):
     else:
         fi_t = str(t)
     return fi_t
-
-
-'''
-opt():
-argparse是一个Python模块：命令行选项、参数和子命令解析器。
-argparse模块可以让人轻松编写用户友好的命令行接口。
-程序定义它需要的参数，然后argparse将弄清楚如何从sys.argv解析出那些参数。
-'''
-
-
-def opt():
-    parser = argparse.ArgumentParser()
-    # 设置四个选项
-    parser.add_argument("-n", dest="need", help="生成数量")
-    parser.add_argument("-r", dest="range", help="生成范围")
-    parser.add_argument("-e", dest="grade_e", help="练习文件")
-    parser.add_argument("-a", dest="grade_a", help="答案文件")
-    args = parser.parse_args()
-    return args
 
 
 # 问题写入Exercises.txt，答案写入Answers.txt
@@ -181,8 +164,52 @@ else后半段 对比答案 python main.py -e Exercises.txt -a Answers.txt
 
 
 def main():
+    t1 = time.time()
+    str_input = ''
+    for w in range(1,len(sys.argv)):
+        str_input +=sys.argv[w]
+    #-n10000-r10
+    try:
 
-    args = opt()
+        need_mode = '-n([\d]+)'
+        erange_mode = '-r([\d]+)'
+        need = int(re.search(need_mode,str_input).group(1))
+        erange = int(re.search(erange_mode,str_input).group(1))
+        if (need <=0) or (erange<=0):
+            print('[-]参数值范围指定有误')
+            print('[-]exiting')
+            return
+        else:
+            to_file(need = need,erange= erange)
+            t2 = time.time()
+            print('Execute time:%.2f' %(t2-t1))
+            return 0
+
+    except:
+        try:
+            e_file_mode = r'-e((.*?).txt)'
+            e_file = re.search(e_file_mode,str_input).group(2)+'.txt'
+            a_file_mode = r'-a((.*?).txt)'
+            a_file = re.search(a_file_mode, str_input).group(2)+'.txt'
+            print(e_file)
+            print(a_file)
+            if os.path.exists(e_file) and os.path.exists(a_file):
+                check_answer(e_fliepath=e_file, a_filepath=a_file)
+                t2 = time.time()
+                print('Execute time:%.2f' % (t2 - t1))
+                return 0
+            else:
+                print('[-]输入的文件路径有误')
+                print('[-]exiting')
+                return
+        except:
+            print("[-]文件扩展名有误或路径有误！")
+            print('[-]exiting')
+            return
+
+
+    ''' 
+  args = opt()
     if args.range and args.need:
         erange2 = int(args.range)
         need_number = int(args.need)
@@ -194,13 +221,13 @@ def main():
         check_answer(e_fliepath=e_file, a_filepath=a_flie)
     else:
         print("请检查输入的文件名信息！\n")
-'''
     t1 = time.time()
     to_file(need=10000, erange=10)
     check_answer(e_fliepath="Exercises.txt", a_filepath="Answers.txt")
     t2= time.time()
-    print(t2-t1)
- '''
+    print('Execute time: %.2f' %(t2-t1))
+    '''
+
 if __name__ == '__main__':
     main()
 
