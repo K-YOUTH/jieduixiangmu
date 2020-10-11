@@ -95,11 +95,18 @@ def opt():
 def to_file(need=10, erange=10):
     question_list = list()  # 问题列表
     answer_list = list()  # 答案列表
-    c = check.check(10)  # check函数检查是否合法
-    for i in range(need):
+    c = check.check()  # check函数检查是否合法
+    i =0
+    """for i in range(need):
         question0 = create_expression(erange=erange)
-        c.check(question0)
-    question_list = c.exp_output()  # 合法的式子存于exp_output()，赋值给问题列表question_list
+        if c.check(question0):  # 合法的式子存于exp_output()，赋值给问题列表question_list
+            question_list.append(question0)"""
+    while i< need:
+        source_question = create_expression(erange=erange)
+        if c.check(source_question):
+            question_list.append(source_question)
+            i+=1
+
     for q in question_list:  # for循环利用get_answer(question)函数获取答案并加进答案列表answer_list
         answer = str(get_answer(q))
         answer_list.append(answer)
@@ -174,7 +181,7 @@ else后半段 对比答案 python main.py -e Exercises.txt -a Answers.txt
 
 
 def main():
-    '''
+
     args = opt()
     if args.range and args.need:
         erange2 = int(args.range)
@@ -193,7 +200,7 @@ def main():
     check_answer(e_fliepath="Exercises.txt", a_filepath="Answers.txt")
     t2= time.time()
     print(t2-t1)
-
+ '''
 if __name__ == '__main__':
     main()
 
